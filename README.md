@@ -29,6 +29,18 @@ Some prompts to answer:
 
 You can include a simple diagram or bullet list if helpful.
 
+
+- Music apps like Spotify guess what you'll like by looking at what other people play and skip, and also at the songs themselves. My version only looks at the songs and what one listener says they like, because with 10 songs and one user there's no crowd to learn from.
+- Every song has its title, artist, genre, mood, energy, tempo, valence, danceability and acousticness. The score only looks at four of those: genre, mood, energy and acousticness. I left tempo out because it mostly moves with energy, so it would just count the same thing twice. Valence and danceability are loaded too, but I'm saving them for later experiments.
+- The user profile stores a favorite genre, a favorite mood, a target energy level between 0 and 1, and a yes/no for whether they like acoustic music.
+- A song gets scored by getting a score out of 1.0, built from:
+- Energy (40%): I reward being close to what the user wants. If they want 0.8, a song at 0.82 gets nearly full credit and one at 0.35 gets much less.
+- Acousticness (20%): If the user likes acoustic music the target is high, and if not it's low.
+- Mood (25%): a flat rate if the song's mood matches exactly.
+- Genre (15%): a smaller flat rate for an exact genre match.
+- I made mood count for more than genre on purpose since mood is the feel you actually hear, while genre is more broad.
+- The way a song gets picked is that every song in the catalog gets scored, then they're sorted from highest to lowest, with ties broken alphabetically so you get the same results every time. The top five become the recommendations, and each one comes with a short reason, like "energy 0.82 vs target 0.80" or "mood matches: happy".
+
 ---
 
 ## Getting Started

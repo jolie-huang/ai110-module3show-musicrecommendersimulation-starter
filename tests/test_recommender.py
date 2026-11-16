@@ -46,6 +46,16 @@ def test_recommend_returns_songs_sorted_by_score():
     assert results[0].mood == "happy"
 
 
+def test_closer_energy_beats_higher_energy():
+    from src.recommender import score_song
+
+    prefs = {"genre": "x", "mood": "x", "energy": 0.8, "likes_acoustic": False}
+    base = {"genre": "y", "mood": "y", "acousticness": 0.2}
+    near = score_song(prefs, {**base, "energy": 0.82})[0]
+    far_higher = score_song(prefs, {**base, "energy": 0.99})[0]
+    assert near > far_higher
+
+
 def test_explain_recommendation_returns_non_empty_string():
     user = UserProfile(
         favorite_genre="pop",
