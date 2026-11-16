@@ -41,6 +41,20 @@ You can include a simple diagram or bullet list if helpful.
 - I made mood count for more than genre on purpose since mood is the feel you actually hear, while genre is more broad.
 - The way a song gets picked is that every song in the catalog gets scored, then they're sorted from highest to lowest, with ties broken alphabetically so you get the same results every time. The top five become the recommendations, and each one comes with a short reason, like "energy 0.82 vs target 0.80" or "mood matches: happy".
 
+Each song can earn up to 5 points:
+- Genre match: +2.0. If the song's genre is the same as the user's favorite, it gets the biggest bonus. Genre is the strongest sign of taste.
+- Mood match: +1.0. If the mood lines up (chill, happy, intense, etc.), the song gets a smaller bonus.
+- Energy closeness: up to +1.5. Songs get more points the closer their energy is to the user's target. The formula is 1.5 × (1 − |song energy − target energy|). A perfect match gets the full 1.5, and a song at the opposite end of the scale gets close to 0.
+- Acousticness closeness: up to +0.5. This only counts if the user has an acoustic preference. It's mostly a tie-breaker, for example to pick between similar lofi tracks.
+
+Biases I expect
+- A genre match is worth more than a mood match plus a pretty good energy match.
+- "indie pop" doesn't count as "pop", so a pop fan could get Gym Hero (pop, but intense) ranked above Rooftop Lights (indie pop, happy and the right energy), even though Rooftop Lights probably feels like a better fit.
+- There are only 18 songs, and most genres and moods appear once. 
+- Energy decides most rankings once genre and mood run out, so users with weird energy targets might get odd results.
+- The weights are my guesses, not tuned from real listening data, so they reflect my assumptions.
+
+
 ---
 
 ## Getting Started
