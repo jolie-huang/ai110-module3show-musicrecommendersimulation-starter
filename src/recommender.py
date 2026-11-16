@@ -2,11 +2,17 @@ import csv
 from dataclasses import dataclass, asdict
 from typing import List, Dict, Tuple
 
-# Algorithm Recipe weights (sum to 1.0)
-W_ENERGY = 0.40
-W_ACOUSTIC = 0.20
-W_MOOD = 0.25
-W_GENRE = 0.15
+# Algorithm Recipe weights.
+# EXPERIMENT: energy doubled (0.40 -> 0.80), genre halved (0.15 -> 0.075).
+# Baseline was energy 0.40, acoustic 0.20, mood 0.25, genre 0.15 (sum 1.0).
+# Raw values now sum to 1.325, so they are normalized to keep scores in [0, 1].
+_RAW = {"energy": 0.80, "acoustic": 0.20, "mood": 0.25, "genre": 0.075}
+_TOTAL = sum(_RAW.values())
+W_ENERGY = _RAW["energy"] / _TOTAL
+W_ACOUSTIC = _RAW["acoustic"] / _TOTAL
+W_MOOD = _RAW["mood"] / _TOTAL
+W_GENRE = _RAW["genre"] / _TOTAL
+assert abs(W_ENERGY + W_ACOUSTIC + W_MOOD + W_GENRE - 1.0) < 1e-9
 
 ACOUSTIC_TARGET_LIKES = 0.8
 ACOUSTIC_TARGET_DISLIKES = 0.2

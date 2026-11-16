@@ -9,17 +9,49 @@ from src.recommender import load_songs, recommend_songs
 
 # Named taste profiles. Keys match what score_song reads.
 PROFILES = {
-    "Default: pop / happy": {
+    # --- Standard profiles ---
+    "High-Energy Pop": {
         "genre": "pop",
         "mood": "happy",
-        "energy": 0.80,
+        "energy": 0.90,
         "likes_acoustic": False,
     },
-    "Late-night study listener: lofi / chill": {
+    "Chill Lofi": {
         "genre": "lofi",
         "mood": "chill",
         "energy": 0.40,
         "likes_acoustic": True,
+    },
+    "Deep Intense Rock": {
+        "genre": "rock",
+        "mood": "intense",
+        "energy": 0.92,
+        "likes_acoustic": False,
+    },
+    # --- Adversarial / edge-case profiles ---
+    "Adversarial: conflicting (energy 0.9 + sad mood)": {
+        "genre": "folk",
+        "mood": "sad",
+        "energy": 0.90,
+        "likes_acoustic": True,
+    },
+    "Adversarial: genre/mood not in catalog": {
+        "genre": "k-pop",
+        "mood": "dreamy",
+        "energy": 0.50,
+        "likes_acoustic": False,
+    },
+    "Adversarial: acoustic fan wants max energy": {
+        "genre": "classical",
+        "mood": "peaceful",
+        "energy": 1.00,
+        "likes_acoustic": True,
+    },
+    "Adversarial: out-of-range energy (-1.0)": {
+        "genre": "ambient",
+        "mood": "chill",
+        "energy": -1.0,
+        "likes_acoustic": False,
     },
 }
 
