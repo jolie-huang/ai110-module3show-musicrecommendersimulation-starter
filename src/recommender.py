@@ -46,6 +46,7 @@ def closeness(value: float, target: float) -> float:
 
 
 def _profile_to_prefs(user: UserProfile) -> Dict:
+    """Convert a UserProfile into the prefs dict that score_song reads."""
     return {
         "genre": user.favorite_genre,
         "mood": user.favorite_mood,
@@ -63,6 +64,7 @@ class Recommender:
         self.songs = songs
 
     def recommend(self, user: UserProfile, k: int = 5) -> List[Song]:
+        """Return the top k songs for this user, highest score first (ties A-Z by title)."""
         prefs = _profile_to_prefs(user)
         ranked = sorted(
             self.songs,
@@ -71,13 +73,21 @@ class Recommender:
         return ranked[:k]
 
     def explain_recommendation(self, user: UserProfile, song: Song) -> str:
+        """Return the song's score and the reasons behind it as one readable string."""
         score, reasons = score_song(_profile_to_prefs(user), asdict(song))
         return f"Score {score:.2f}: " + "; ".join(reasons)
 
 def load_songs(csv_path: str) -> List[Dict]:
     """
-    Loads songs from a CSV file.
+    Loads songs from a CSV file using csv.DictReader.
     Required by src/main.py
+
+    Returns a list of dicts, one per song. csv gives every value back as a
+    string, so numeric columns are converted to numbers for later math:
+      - id               -> int
+      - tempo_bpm        -> float
+      - energy, valence, danceability, acousticness -> float
+    Text columns (title, artist, genre, mood) stay as strings.
     """
     songs: List[Dict] = []
     with open(csv_path, newline="", encoding="utf-8") as f:
@@ -120,13 +130,12 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
     return score, reasons
 
 def recommend_songs(user_prefs: Dict, songs: List[Dict], k: int = 5) -> List[Tuple[Dict, float, str]]:
-    """
-    Functional implementation of the recommendation logic.
-    Required by src/main.py
-    """
-    scored = []
-    for song in songs:
-        score, reasons = score_song(user_prefs, song)
-        scored.append((song, score, "; ".join(reasons)))
-    scored.sort(key=lambda item: (-item[1], item[0]["title"]))
-    return scored[:k]
+    """Score every song, sort best-first, and return the top k as (song, score, reasons string)."""
+    # 1. Judge every song: (song, score, reasons)
+    scored = [(song, *score_song(user_prefs, song)) for song in songs]
+
+    # 2. Sort highest score first; ties go alphabetically by title
+    ranked = sorted(scored, key=lambda t: (-t[1], t[0]["title"]))
+
+    # 3. Keep the top k and turn each reasons list into one string
+    return [(song, score, "; ".join(reasons)) for song, score, reasons in ranked[:k]]

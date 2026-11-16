@@ -94,16 +94,51 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Sample Recommendation Output
 
-Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
+Output from `python -m src.main` for the default **pop / happy** profile (each song shows its score and the reasons behind it):
 
 ```
-# e.g.:
-# User profile: genre=indie, mood=chill, energy=low
-# Recommendations:
-#   1. ...
-#   2. ...
-#   3. ...
+Loaded songs: 18
+
+============================================================
+Profile: Default: pop / happy
+         genre=pop, mood=happy, energy=0.80, prefers non-acoustic
+============================================================
+
+#1  Sunrise City by Neon Echo
+    Score: 0.99 / 1.00   [pop, happy]
+    Why:
+      - energy 0.82 vs target 0.80 (+0.39)
+      - acousticness 0.18 vs target 0.20 (+0.20)
+      - mood matches: happy (+0.25)
+      - genre matches: pop (+0.15)
+
+#2  Rooftop Lights by Indigo Parade
+    Score: 0.80 / 1.00   [indie pop, happy]
+    Why:
+      - energy 0.76 vs target 0.80 (+0.38)
+      - acousticness 0.35 vs target 0.20 (+0.17)
+      - mood matches: happy (+0.25)
+
+#3  Gym Hero by Max Pulse
+    Score: 0.67 / 1.00   [pop, intense]
+    Why:
+      - energy 0.93 vs target 0.80 (+0.35)
+      - acousticness 0.05 vs target 0.20 (+0.17)
+      - genre matches: pop (+0.15)
+
+#4  Concrete Crown by Verse Theory
+    Score: 0.58 / 1.00   [hip hop, confident]
+    Why:
+      - energy 0.78 vs target 0.80 (+0.39)
+      - acousticness 0.12 vs target 0.20 (+0.18)
+
+#5  Night Drive Loop by Neon Echo
+    Score: 0.58 / 1.00   [synthwave, moody]
+    Why:
+      - energy 0.75 vs target 0.80 (+0.38)
+      - acousticness 0.22 vs target 0.20 (+0.20)
 ```
+
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
 
